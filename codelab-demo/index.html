@@ -17,14 +17,14 @@
     <section id="agente" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #58a6ff; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
       <h2 style="margin-top:0; color:#58a6ff; font-size:19px;">¿Qué es un agente de IA?</h2>
       <p style="line-height:1.7; font-size:15px;">
-        Un agente de IA es un programa que no se limita a responder texto, sino que puede actuar sobre su entorno
+        Un <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">agente de IA</code> es un programa que no se limita a responder texto, sino que puede actuar sobre su entorno
         repitiendo un ciclo simple: pensar, usar una herramienta, observar el resultado y decidir el siguiente paso.
       </p>
       <p style="line-height:1.7; font-size:15px;">
-        Por ejemplo, para crear este mismo archivo, primero pensé qué contenido necesitaba, después usé una
-        herramienta para escribir el archivo <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">index.html</code> en el disco, luego el sistema me devolvió la
-        confirmación de que se había creado correctamente, y con esa observación decidí que la tarea estaba completa
-        y pasé a redactar esta explicación. Ese mismo loop se repite tantas veces como sea necesario hasta cumplir
+        Por ejemplo, para resolver una tarea, el agente primero piensa qué necesita hacer, después usa una
+        herramienta como escribir un archivo <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">index.html</code> en el disco, luego observa la
+        confirmación que le devuelve el sistema, y con esa observación decide si la tarea está completa o si debe
+        seguir. Ese mismo loop se repite tantas veces como sea necesario hasta cumplir
         el objetivo, encadenando pequeñas decisiones en lugar de resolver todo de una sola vez.
       </p>
     </section>
@@ -48,17 +48,35 @@
     <section id="worktrees" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #f778ba; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
       <h2 style="margin-top:0; color:#f778ba; font-size:19px;">Git Worktrees</h2>
       <p style="line-height:1.7; font-size:15px;">
-        Un <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">git worktree</code> es una copia de trabajo adicional del mismo repositorio, ubicada en otra carpeta del disco, que puede tener su propia rama activa al mismo tiempo que la carpeta original sigue en otra rama distinta. Ambas copias comparten el mismo historial de <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">git</code> (los mismos commits y objetos), pero cada una tiene su propio checkout físico de archivos en disco.
+        Un <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">git worktree</code> es una copia de trabajo adicional del mismo repositorio, ubicada en otra carpeta del disco, que puede tener su
+        propia rama activa al mismo tiempo que la carpeta original sigue en otra rama distinta. Ambas copias comparten el
+        mismo historial de <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">git</code> (los mismos commits y objetos), pero cada una tiene su propio checkout físico de archivos en
+        disco.
       </p>
       <p style="line-height:1.7; font-size:15px;">
-        Esto resulta muy útil cuando varios agentes de IA trabajan en paralelo sobre el mismo repositorio: si dos agentes editaran simultáneamente el mismo directorio de trabajo, uno podría sobrescribir o dejar en un estado inconsistente los cambios del otro. Con worktrees separados, en cambio, cada agente tiene su propio directorio y puede modificar archivos al mismo tiempo sin pisarse ni generar conflictos. Por ejemplo, un agente puede trabajar en <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">../repo-feature-a</code> sobre la rama <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">feature-a</code> mientras otro trabaja en <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">../repo-feature-b</code> sobre <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">feature-b</code>, y luego esos cambios se integran de vuelta, por ejemplo con un <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">merge</code>.
+        Esto resulta muy útil cuando varios agentes de IA trabajan en paralelo sobre el mismo repositorio: si dos agentes
+        editaran simultáneamente el mismo directorio de trabajo, uno podría sobrescribir o dejar en un estado inconsistente
+        los cambios del otro. Con worktrees separados, en cambio, cada agente tiene su propio directorio y puede modificar
+        archivos al mismo tiempo sin pisarse ni generar conflictos. Por ejemplo, un agente puede trabajar en ../repo-feature-a
+        sobre la rama feature-a mientras otro trabaja en ../repo-feature-b sobre feature-b, y luego esos cambios se integran
+        de vuelta, por ejemplo con un merge.
       </p>
     </section>
 
     <section id="workflows" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #a371f7; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
       <h2 style="margin-top:0; color:#a371f7; font-size:19px;">Workflows de orquestación</h2>
-      <p style="line-height:1.7; font-size:15px;">Un <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">workflow de orquestación</code> es, en el fondo, un script determinista que coordina a varios subagentes: define de antemano qué tareas corren en paralelo, cuáles deben esperar a que otras terminen, qué pasos incluyen una verificación explícita, y de qué manera se combinan los resultados parciales en una salida final. En lugar de tener un único agente resolviendo todo, el workflow reparte el trabajo entre agentes especializados que se invocan en momentos y con datos precisos.</p>
-      <p style="line-height:1.7; font-size:15px;">La diferencia clave con simplemente pedirle algo a un agente suelto está en quién controla el flujo. Cuando le pedís una tarea a un agente, es el propio modelo el que decide sobre la marcha qué hacer en cada paso: qué herramienta usar, cuándo seguir y cuándo parar. En un workflow, en cambio, ese control (los bucles, las condiciones, el reparto de tareas en paralelo y su posterior combinación, los chequeos de calidad) está fijado de antemano en código, y los agentes son simplemente piezas que se ejecutan dentro de esa estructura. Por ejemplo, un workflow puede lanzar tres subagentes en paralelo para investigar distintas partes de un problema, esperar a que los tres terminen, correr un paso de verificación sobre sus resultados, y recién ahí sintetizar la respuesta final. Este diseño hace que el proceso sea mucho más repetible y permite coordinar de forma confiable a muchos agentes a la vez, algo difícil de lograr si se deja toda la decisión librada al criterio del modelo en cada instante.</p>
+      <p style="line-height:1.7; font-size:15px;">
+        Un <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">workflow de orquestación</code> es, en el fondo, un script determinista que coordina a varios subagentes: define de antemano qué tareas corren
+        en paralelo, cuáles deben esperar a que otras terminen, qué pasos incluyen una verificación explícita, y de qué manera
+        se combinan los resultados parciales en una salida final. En lugar de tener un único agente resolviendo todo, el
+        workflow reparte el trabajo entre agentes especializados que se invocan en momentos y con datos precisos.
+      </p>
+      <p style="line-height:1.7; font-size:15px;">
+        La diferencia clave con pedirle algo a un agente suelto está en quién controla el flujo. Cuando le pedís una tarea a
+        un agente, es el propio modelo el que decide qué hacer en cada paso. En un workflow, ese control está fijado de
+        antemano en código, y los agentes son piezas que se ejecutan dentro de esa estructura. Por ejemplo, puede lanzar tres
+        subagentes en paralelo, esperar a que terminen, verificar los resultados y recién ahí sintetizar la respuesta final.
+      </p>
     </section>
 
   </main>
