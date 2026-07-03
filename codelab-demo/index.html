@@ -19,6 +19,8 @@
       <p style="line-height:1.6; font-size:16px;">
         Un agente de IA es un programa que no se limita a responder texto, sino que puede actuar sobre su entorno
         repitiendo un ciclo simple: pensar, usar una herramienta, observar el resultado y decidir el siguiente paso.
+      </p>
+      <p style="line-height:1.6; font-size:16px;">
         Por ejemplo, para crear este mismo archivo, primero pensé qué contenido necesitaba, después usé una
         herramienta para escribir el archivo <code>index.html</code> en el disco, luego el sistema me devolvió la
         confirmación de que se había creado correctamente, y con esa observación decidí que la tarea estaba completa
@@ -29,7 +31,18 @@
 
     <section id="subagentes" style="background-color:#ffffff; border:1px solid #ddd; border-radius:8px; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.08); margin-bottom:24px;">
       <h2 style="margin-top:0; color:#2b2d42;">Subagentes</h2>
-      <p style="line-height:1.6; font-size:16px;">Un subagente es simplemente otro agente que un agente principal lanza para encargarle una tarea específica, como si delegara trabajo a un colaborador especializado. A diferencia de una función normal, el subagente arranca con un contexto propio y aislado: no ve el historial de la conversación que originó la tarea, solo recibe la información que se le pasa explícitamente en su prompt inicial. Esta separación no es una limitación, sino una decisión de diseño, porque evita que el razonamiento y la memoria de uno contaminen al otro. Gracias a ese aislamiento es posible lanzar varios subagentes en paralelo, por ejemplo uno investigando un archivo y otro escribiendo pruebas al mismo tiempo, sin que se pisen el contexto ni se mezclen sus pasos de razonamiento.</p>
+      <p style="line-height:1.6; font-size:16px;">
+        Un <code>subagente</code> es simplemente otro agente que un agente principal lanza para encargarle una tarea
+        específica, como si delegara trabajo a un colaborador especializado. A diferencia de una función normal, el
+        subagente arranca con un contexto propio y aislado: no ve el historial de la conversación que originó la
+        tarea, solo recibe la información que se le pasa explícitamente en su prompt inicial.
+      </p>
+      <p style="line-height:1.6; font-size:16px;">
+        Esta separación no es una limitación, sino una decisión de diseño, porque evita que el razonamiento y la
+        memoria de uno contaminen al otro. Gracias a ese aislamiento es posible lanzar varios subagentes en paralelo,
+        por ejemplo uno investigando un archivo y otro escribiendo pruebas al mismo tiempo, sin que se pisen el
+        contexto ni se mezclen sus pasos de razonamiento.
+      </p>
     </section>
 
     <section id="worktrees" style="background-color:#ffffff; border:1px solid #ddd; border-radius:8px; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.08); margin-bottom:24px;">
@@ -44,7 +57,7 @@
 
     <section id="workflows" style="background-color:#ffffff; border:1px solid #ddd; border-radius:8px; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.08); margin-bottom:24px;">
       <h2 style="margin-top:0; color:#2b2d42;">Workflows de orquestación</h2>
-      <p style="line-height:1.6; font-size:16px;">Un <strong>workflow de orquestación</strong> es, en el fondo, un script determinista que coordina a varios subagentes: define de antemano qué tareas corren en paralelo, cuáles deben esperar a que otras terminen, qué pasos incluyen una verificación explícita, y de qué manera se combinan los resultados parciales en una salida final. En lugar de tener un único agente resolviendo todo, el workflow reparte el trabajo entre agentes especializados que se invocan en momentos y con datos precisos.</p>
+      <p style="line-height:1.6; font-size:16px;">Un <code>workflow de orquestación</code> es, en el fondo, un script determinista que coordina a varios subagentes: define de antemano qué tareas corren en paralelo, cuáles deben esperar a que otras terminen, qué pasos incluyen una verificación explícita, y de qué manera se combinan los resultados parciales en una salida final. En lugar de tener un único agente resolviendo todo, el workflow reparte el trabajo entre agentes especializados que se invocan en momentos y con datos precisos.</p>
       <p style="line-height:1.6; font-size:16px;">La diferencia clave con simplemente pedirle algo a un agente suelto está en quién controla el flujo. Cuando le pedís una tarea a un agente, es el propio modelo el que decide sobre la marcha qué hacer en cada paso: qué herramienta usar, cuándo seguir y cuándo parar. En un workflow, en cambio, ese control (los bucles, las condiciones, el reparto de tareas en paralelo y su posterior combinación, los chequeos de calidad) está fijado de antemano en código, y los agentes son simplemente piezas que se ejecutan dentro de esa estructura. Por ejemplo, un workflow puede lanzar tres subagentes en paralelo para investigar distintas partes de un problema, esperar a que los tres terminen, correr un paso de verificación sobre sus resultados, y recién ahí sintetizar la respuesta final. Este diseño hace que el proceso sea mucho más repetible y permite coordinar de forma confiable a muchos agentes a la vez, algo difícil de lograr si se deja toda la decisión librada al criterio del modelo en cada instante.</p>
     </section>
 
