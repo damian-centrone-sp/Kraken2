@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./scripts/check.sh)",
+      "Bash(npm *)",
+      "Bash(git *)",
+      "Bash(gh *)"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Edit(.env*)",
+      "Read(data/equipo_pii.json)",
+      "Edit(data/equipo_pii.json)"
+    ]
+  }
+}
