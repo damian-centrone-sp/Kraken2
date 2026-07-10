@@ -71,40 +71,16 @@ header p { color: #8b93a7; margin-top: .35rem; font-size: .9rem; }
 }
 
 .tarjeta {
-  position: relative;
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .06);
   border-left: 3px solid var(--acento);
   border-radius: .6rem;
-  padding: .6rem 2rem .6rem .75rem;
+  padding: .6rem .75rem;
   line-height: 1.35;
-  transition: transform .15s ease, background .15s ease;
+  transition: transform .15s ease;
 }
 
 .tarjeta:hover { transform: translateY(-2px); }
-
-.tarjeta.destacada {
-  background: rgba(246, 193, 119, .12);
-  border-color: #f6c177;
-  box-shadow: 0 0 0 1px rgba(246, 193, 119, .35);
-}
-
-.destacar {
-  position: absolute;
-  top: .4rem;
-  right: .4rem;
-  background: transparent;
-  color: #8b93a7;
-  border: none;
-  font-size: 1.1rem;
-  line-height: 1;
-  padding: .15rem;
-  cursor: pointer;
-}
-
-.tarjeta.destacada .destacar { color: #f6c177; }
-
-.destacar:hover { filter: brightness(1.2); }
 
 .responsable {
   display: inline-block;

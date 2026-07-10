@@ -7,7 +7,6 @@ interface Tarjeta {
   columna: ColumnaId;
   texto: string;
   responsable?: string;
-  destacada: boolean;
 }
 
 const COLUMNAS: { id: ColumnaId; titulo: string; emoji: string }[] = [
@@ -51,11 +50,6 @@ export function App() {
     return true;
   }
 
-  async function destacar(id: number): Promise<void> {
-    await fetch(`/api/tarjetas/${id}/destacar`, { method: 'PATCH' });
-    void cargar();
-  }
-
   return (
     <main>
       <header>
@@ -70,7 +64,6 @@ export function App() {
             {...columna}
             tarjetas={tarjetas.filter((t) => t.columna === columna.id)}
             onAgregar={agregar}
-            onDestacar={destacar}
           />
         ))}
       </div>
@@ -88,11 +81,10 @@ interface ColumnaProps {
     texto: string,
     responsable: string,
   ) => Promise<boolean>;
-  onDestacar: (id: number) => Promise<void>;
 }
 
 function ColumnaRetro(props: ColumnaProps) {
-  const { id, titulo, emoji, tarjetas, onAgregar, onDestacar } = props;
+  const { id, titulo, emoji, tarjetas, onAgregar } = props;
   const [texto, setTexto] = useState('');
   const [responsable, setResponsable] = useState('');
 
@@ -111,19 +103,7 @@ function ColumnaRetro(props: ColumnaProps) {
         <span className="contador">{tarjetas.length}</span>
       </h2>
       {tarjetas.map((tarjeta) => (
-        <article
-          key={tarjeta.id}
-          className={`tarjeta${tarjeta.destacada ? ' destacada' : ''}`}
-        >
-          <button
-            type="button"
-            className="destacar"
-            aria-label={tarjeta.destacada ? 'Quitar destacado' : 'Destacar como importante'}
-            aria-pressed={tarjeta.destacada}
-            onClick={() => void onDestacar(tarjeta.id)}
-          >
-            {tarjeta.destacada ? '★' : '☆'}
-          </button>
+        <article key={tarjeta.id} className="tarjeta">
           {tarjeta.texto}
           {tarjeta.responsable && (
             <div>
