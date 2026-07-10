@@ -12,5 +12,19 @@
       "Read(data/equipo_pii.json)",
       "Edit(data/equipo_pii.json)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/check.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
   }
 }
