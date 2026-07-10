@@ -7,6 +7,7 @@ interface Tarjeta {
   columna: ColumnaId;
   texto: string;
   responsable?: string;
+  votos: number;
 }
 
 const COLUMNAS: { id: ColumnaId; titulo: string; emoji: string }[] = [
@@ -50,6 +51,19 @@ export function App() {
     return true;
   }
 
+  async function votar(id: number): Promise<void> {
+    const respuesta = await fetch(`/api/tarjetas/${id}/votar`, {
+      method: 'PATCH',
+    });
+    if (!respuesta.ok) {
+      const cuerpo = await respuesta.json();
+      setError(cuerpo.message ?? 'algo salió mal');
+      return;
+    }
+    setError('');
+    void cargar();
+  }
+
   return (
     <main>
       <header>
@@ -64,6 +78,7 @@ export function App() {
             {...columna}
             tarjetas={tarjetas.filter((t) => t.columna === columna.id)}
             onAgregar={agregar}
+            onVotar={votar}
           />
         ))}
       </div>
@@ -81,10 +96,11 @@ interface ColumnaProps {
     texto: string,
     responsable: string,
   ) => Promise<boolean>;
+  onVotar: (id: number) => Promise<void>;
 }
 
 function ColumnaRetro(props: ColumnaProps) {
-  const { id, titulo, emoji, tarjetas, onAgregar } = props;
+  const { id, titulo, emoji, tarjetas, onAgregar, onVotar } = props;
   const [texto, setTexto] = useState('');
   const [responsable, setResponsable] = useState('');
 
@@ -104,6 +120,15 @@ function ColumnaRetro(props: ColumnaProps) {
       </h2>
       {tarjetas.map((tarjeta) => (
         <article key={tarjeta.id} className="tarjeta">
+          <button
+            type="button"
+            className="votar"
+            aria-label="Votar esta tarjeta"
+            onClick={() => void onVotar(tarjeta.id)}
+          >
+            <span aria-hidden="true">▲</span>
+            <span className="votos">{tarjeta.votos}</span>
+          </button>
           {tarjeta.texto}
           {tarjeta.responsable && (
             <div>
