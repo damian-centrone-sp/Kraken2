@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 export type ColumnaId = 'bien' | 'mejorar' | 'acciones';
 
@@ -7,6 +11,7 @@ export interface Tarjeta {
   columna: ColumnaId;
   texto: string;
   responsable?: string;
+  destacada: boolean;
 }
 
 const COLUMNAS: ColumnaId[] = ['bien', 'mejorar', 'acciones'];
@@ -31,8 +36,18 @@ export class RetroService {
       columna,
       texto: texto.trim(),
       responsable: responsable?.trim() || undefined,
+      destacada: false,
     };
     this.tarjetas.push(tarjeta);
+    return tarjeta;
+  }
+
+  destacar(id: number): Tarjeta {
+    const tarjeta = this.tarjetas.find((t) => t.id === id);
+    if (!tarjeta) {
+      throw new NotFoundException('esa tarjeta no existe');
+    }
+    tarjeta.destacada = !tarjeta.destacada;
     return tarjeta;
   }
 
