@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend Semantic Search — Setup &amp; Pruebas</title>
+</head>
+<body style="margin:0 auto; padding:32px 18px; max-width:720px; box-sizing:border-box; font-family: 'Fira Code', 'JetBrains Mono', 'Consolas', 'SFMono-Regular', Menlo, monospace; background-color:#0d1117; color:#c9d1d9;">
+
+  <header style="background-color:#010409; color:#7ee787; padding:28px 18px; text-align:center; border-radius:6px; border:1px solid #30363d; box-shadow:0 0 24px rgba(126,231,135,0.08);">
+    <h1 style="margin:0; font-size:26px; letter-spacing:0.5px;">&gt; Semantic Search_</h1>
+    <p style="margin:10px 0 0; font-size:13px; color:#8b949e;">Guía de setup y pruebas del backend de búsqueda semántica</p>
+  </header>
+
+  <main style="margin:32px 0;">
+
+    <section id="backend" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #58a6ff; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
+      <h2 style="margin-top:0; color:#58a6ff; font-size:19px;">1. Levantar el backend</h2>
+      <p style="line-height:1.7; font-size:15px;">
+        Desde <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">hoopis-backend</code>:
+      </p>
+      <pre style="background-color:#010409; color:#c9d1d9; padding:14px 16px; border-radius:6px; border:1px solid #30363d; overflow-x:auto; font-family:inherit; font-size:13px; line-height:1.6;">npm run docker:up:build</pre>
+      <p style="line-height:1.7; font-size:15px;">
+        La <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">OPENAI_API_KEY</code> debe estar configurada en:
+      </p>
+      <ul style="line-height:1.8; font-size:15px; padding-left:22px;">
+        <li><code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">.env.local</code>, para transcribir los videos.</li>
+        <li><code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">microservices/ai-gateway/.env.local</code>, para embeddings y búsqueda.</li>
+      </ul>
+      <p style="line-height:1.7; font-size:15px; margin-bottom:6px;">URLs:</p>
+      <ul style="line-height:1.8; font-size:15px; padding-left:22px;">
+        <li>Nest Swagger: <a href="http://localhost:3000/docs" style="color:#58a6ff; text-decoration:none;">http://localhost:3000/docs</a></li>
+        <li>FastAPI Swagger: <a href="http://localhost:8100/docs" style="color:#58a6ff; text-decoration:none;">http://localhost:8100/docs</a></li>
+        <li>AI Gateway health: <a href="http://localhost:8100/health" style="color:#58a6ff; text-decoration:none;">http://localhost:8100/health</a></li>
+      </ul>
+    </section>
+
+    <section id="cursos" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #d29922; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
+      <h2 style="margin-top:0; color:#d29922; font-size:19px;">2. Subir los cursos</h2>
+      <p style="line-height:1.7; font-size:15px;">
+        Se pueden subir desde Content Factory o desde Nest Swagger. Desde Swagger:
+      </p>
+      <ol style="line-height:1.8; font-size:15px; padding-left:22px;">
+        <li>Registrarse o iniciar sesión y cargar el <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">accessToken</code> en Authorize.</li>
+        <li>Crear el curso con <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">POST /api/v1/content-factory/editor-documents</code>.</li>
+        <li>Guardar <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">document.id</code> y <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">document.contentItemId</code>.</li>
+        <li>Subir el video con <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">POST /api/v1/content-factory/editor-documents/{id}/video-upload</code>.</li>
+        <li>Iniciar la transcripción con <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">POST /api/v1/content-factory/editor-documents/{id}/pipeline/transcription-requests</code>.</li>
+        <li>Esperar a que termine y verificar que se hayan generado las oraciones de la transcripción.</li>
+      </ol>
+      <p style="line-height:1.7; font-size:15px;">
+        Los embeddings se indexan automáticamente después de una transcripción exitosa.
+      </p>
+      <p style="line-height:1.7; font-size:15px; background-color:#0d1117; border:1px solid #30363d; border-left:3px solid #d29922; border-radius:4px; padding:12px 16px;">
+        <strong style="color:#d29922;">Importante:</strong><br>
+        &bull; <code style="background-color:#010409; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">document.id</code> se usa para Content Factory.<br>
+        &bull; <code style="background-color:#010409; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">document.contentItemId</code> se usa para buscar.
+      </p>
+    </section>
+
+    <section id="busqueda-local" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #f778ba; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
+      <h2 style="margin-top:0; color:#f778ba; font-size:19px;">3. Probar la búsqueda (local)</h2>
+      <p style="line-height:1.7; font-size:15px;">
+        Abrir <a href="http://localhost:8100/docs" style="color:#58a6ff; text-decoration:none;">http://localhost:8100/docs</a> y ejecutar
+        <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">POST /v1/learner-platform/semantic-search</code>:
+      </p>
+      <pre style="background-color:#010409; color:#c9d1d9; padding:14px 16px; border-radius:6px; border:1px solid #30363d; overflow-x:auto; font-family:inherit; font-size:13px; line-height:1.6;">{
+  "query": "¿Qué debería hacer si recibo un correo que parece una estafa?",
+  "allowedContentItemIds": [
+    "&lt;contentItemId-curso-seguridad&gt;",
+    "&lt;contentItemId-curso-finanzas&gt;",
+    "&lt;contentItemId-curso-liderazgo&gt;"
+  ],
+  "limit": 10
+}</pre>
+      <p style="line-height:1.7; font-size:15px;">
+        Este endpoint local no requiere bearer token. También se puede probar con cURL:
+      </p>
+      <pre style="background-color:#010409; color:#c9d1d9; padding:14px 16px; border-radius:6px; border:1px solid #30363d; overflow-x:auto; font-family:inherit; font-size:13px; line-height:1.6;">curl -X POST \
+  'http://localhost:8100/v1/learner-platform/semantic-search' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "¿Qué debería hacer si recibo un correo que parece una estafa?",
+    "allowedContentItemIds": [
+      "&lt;contentItemId-1&gt;",
+      "&lt;contentItemId-2&gt;"
+    ],
+    "limit": 10
+  }'</pre>
+    </section>
+
+    <section id="staging" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #a371f7; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
+      <h2 style="margin-top:0; color:#a371f7; font-size:19px;">4. Prueba en staging</h2>
+      <p style="line-height:1.7; font-size:15px;">
+        <strong style="color:#a371f7;">Subir los cursos.</strong> Abrir Content Factory en
+        <a href="https://dq2cthshjb7ho.cloudfront.net/content-factory" style="color:#58a6ff; text-decoration:none; word-break:break-all;">https://dq2cthshjb7ho.cloudfront.net/content-factory</a>,
+        subir los cursos y esperar a que termine la transcripción. Los cursos también deben estar disponibles en el
+        catálogo de Learner Platform para el mismo tenant usado por QA: la búsqueda filtra cualquier curso que no sea
+        visible para ese tenant.
+      </p>
+      <p style="line-height:1.7; font-size:15px;">
+        <strong style="color:#a371f7;">Ejecutar la búsqueda.</strong> En staging no hay Swagger público; la prueba debe
+        hacerse con Postman o cURL:
+      </p>
+      <pre style="background-color:#010409; color:#c9d1d9; padding:14px 16px; border-radius:6px; border:1px solid #30363d; overflow-x:auto; font-family:inherit; font-size:13px; line-height:1.6;">POST https://dq2cthshjb7ho.cloudfront.net/api/v1/learner-view/search
+Authorization: Bearer &lt;staging-learner-token&gt;
+Content-Type: application/json
+
+{
+  "query": "¿Qué debería hacer si recibo un correo que parece una estafa?",
+  "limit": 20
+}</pre>
+      <p style="line-height:1.7; font-size:15px;">
+        Debe usarse un token de learner del mismo tenant que los cursos. Se puede copiar desde una request autenticada
+        en la pestaña Network del navegador. <strong style="color:#f85149;">No compartir el token por Slack o Jira.</strong>
+      </p>
+      <p style="line-height:1.7; font-size:15px;">Ejemplo con cURL:</p>
+      <pre style="background-color:#010409; color:#c9d1d9; padding:14px 16px; border-radius:6px; border:1px solid #30363d; overflow-x:auto; font-family:inherit; font-size:13px; line-height:1.6;">curl -X POST \
+  'https://dq2cthshjb7ho.cloudfront.net/api/v1/learner-view/search' \
+  -H 'Authorization: Bearer &lt;staging-learner-token&gt;' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "query": "¿Qué debería hacer si recibo un correo que parece una estafa?",
+    "limit": 20
+  }'</pre>
+    </section>
+
+    <section id="validar" style="background-color:#161b22; border:1px solid #30363d; border-left:3px solid #7ee787; border-radius:6px; padding:24px; box-shadow:0 4px 12px rgba(0,0,0,0.45); margin-bottom:22px;">
+      <h2 style="margin-top:0; color:#7ee787; font-size:19px;">Qué validar</h2>
+      <ul style="line-height:1.9; font-size:15px; padding-left:22px;">
+        <li><strong>Palabras exactas:</strong> buscar una frase que aparezca solamente en un curso.</li>
+        <li><strong>Similitud semántica:</strong> buscar la misma idea usando palabras diferentes.</li>
+        <li><strong>Ranking:</strong> el curso más relacionado debería aparecer primero.</li>
+        <li><strong>Fragmento:</strong> <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">matched_chunk.text</code> debería mostrar la parte relevante de la transcripción.</li>
+        <li><strong>Timestamps:</strong> <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">start_ms</code> y <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">end_ms</code> deberían coincidir aproximadamente con el fragmento.</li>
+        <li><strong>Límite:</strong> con <code style="background-color:#0d1117; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">"limit": 1</code> no debería volver más de un resultado.</li>
+        <li><strong>Tenant:</strong> nunca deberían aparecer cursos pertenecientes solamente a otro tenant.</li>
+      </ul>
+      <p style="line-height:1.7; font-size:15px; background-color:#0d1117; border:1px solid #30363d; border-left:3px solid #7ee787; border-radius:4px; padding:12px 16px;">
+        <code style="background-color:#010409; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">relevance</code> y
+        <code style="background-color:#010409; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">matched_chunk.score</code>
+        son valores de ranking, no porcentajes de confianza. El primer resultado puede tener <code style="background-color:#010409; color:#7ee787; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">1.0</code> porque los puntajes están normalizados.
+      </p>
+      <p style="line-height:1.7; font-size:15px;">
+        Un <code style="background-color:#0d1117; color:#f85149; padding:2px 6px; border-radius:4px; border:1px solid #30363d; font-family:inherit;">401</code>
+        en staging normalmente significa que el token falta, venció o no contiene el contexto de learner y tenant. Si un
+        curso transcripto no aparece, primero hay que confirmar que esté disponible en el catálogo del mismo tenant.
+      </p>
+    </section>
+
+  </main>
+
+  <footer style="text-align:center; padding:18px; color:#6e7681; font-size:12px; border-top:1px solid #21262d; margin-top:8px;">
+    Guía de setup y pruebas — semantic search backend.
+  </footer>
+
+</body>
+</html>
